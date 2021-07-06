@@ -3,6 +3,31 @@
 #include <string.h>
 #include<mysql/mysql.h>
 #pragma comment(lib，"libmysql.lib")
+#define DATABASE    "MyDatabase"
+#define TABLE       "user"
+/**
+ * @brief   基于MySQL的学生信息查询系统
+ * @author  龚娜
+ * @data    2021/07/06
+*/
+ 
+
+void finish_with_error(MYSQL *con);
+//精确查询用户信息
+int GetValue(MYSQL *con, const char* table, const char* ColumnName, const char* id, char* buf);
+//插入用户信息
+int InsertValue(MYSQL *con, const char* table, const char* ColumnName, const char* id, char* buf);
+//更新用户信息
+int UpdataValue(MYSQL *con, const char* table, const char* ColumnName, const char* id, char* buf);
+//删除用户信息
+int DeleteValue(MYSQL *con, const char* table, const char* ColumnName, const char* id, char* buf);
+//模糊查找用户信息
+int GetValueReturnAllInFo(MYSQL *con, const char* table, const char* id, char* buf);
+
+
+
+
+
 
  
 
@@ -11,7 +36,6 @@
 #define SELECT_QUERY "select* from user  where studentId=%d"
 
 int main(int argc,char*argv[])//char**argv相当于char*argv[]
-
 {
     MYSQL mysql,*sock;//定义数据库连接的句柄，它被用于几乎所有的MySQL函数
 
@@ -23,6 +47,9 @@ int main(int argc,char*argv[])//char**argv相当于char*argv[]
 
     char qbuf[160];//存放查询sql语句字符串
 
+     
+    printf("*********欢迎使用学生信息查询系统!***********\n");
+
     if(argc!=2){//检查输入参数
 
         fprintf(stderr,"usage:mysql_select\n");
@@ -32,6 +59,7 @@ int main(int argc,char*argv[])//char**argv相当于char*argv[]
     }
 
     mysql_init(&mysql);
+    //mysql成功连接的MySQL变量--实参
 
     if(!(sock=mysql_real_connect(&mysql,"localhost","gongna2","123456","MyDatabase",0,NULL,0))){
         fprintf(stderr,"Couldn't connect to engine!\n%s\n\n",mysql_error(&mysql));
@@ -71,59 +99,330 @@ int main(int argc,char*argv[])//char**argv相当于char*argv[]
 
     exit(0);
 
+
+
+
+
+
+
+
+    //成功连接数据库的变量
+    MYSQL *con = NULL;
+    char id[20] = {0};//ID是学生编号
+    char buf[1000] = {0};//buf是缓冲区
+    int columnType;
+    int searchMethodType;
+    con=mysql_real_connect(&mysql,"localhost","gongna2","123456","MyDatabase",0,NULL,0);
+    if (con==NULL){
+        printf("MySQL init fail.\n");
+        fprintf(stderr,"%s\n",mysql_error(con));
+        return -1;
+    }
+    printf("远程数据库登录成功！\n");
+
+    printf("请选择查询方法类型\n1-->精确查找:\n2-->模糊查找");
+    scanf("%d", &searchMethodType);
+
+
+
+    switch(searchMethodType){ 
+
+        case 1:
+
+            printf("请选择需要查询的用户信息:\n");
+    
+            printf("--->1)studentId学生学号; 2)gender学生性别; 3)name学生姓名;4)age学生年龄;5)classId学生班级\n");
+            scanf("%d", &columnType);
+    
+            printf("请输入要查询的学生的编号:");
+            //接收用户输入
+            scanf("%s", id);
+            switch(columnType){
+                case 1:
+            /* 查询学生学号并打印结果 */
+                    if(-1 != GetValue(con, TABLE, "studentId", id, buf)){
+                        printf("--->编号为%s的学生信息查询成功，studentId为:%s\n", id, buf);
+                    }
+                    else{
+                        printf("--->编号为%s的学生信息查询失败!\n", id);
+                        return -1;
+                    }
+                    break;
+
+                case 2:
+            /* 查询学生性别并打印结果 */
+                    if(-1 != GetValue(con, TABLE, "gender", id, buf)){
+                        printf("--->编号为%s的学生信息查询成功，gender为:%s\n", id, buf);
+                    }
+                    else{
+                        printf("--->编号为%s的学生信息查询失败!\n", id);
+                        return -1;
+                    }
+                    break;
+                
+                case 3:
+            /* 查询学生姓名并打印结果 */
+                    if(-1 != GetValue(con, TABLE, "name", id, buf)){
+                        printf("--->编号为%s的学生信息查询成功，name为:%s\n", id, buf);
+                    }
+                    else{
+                        printf("--->编号为%s的学生信息查询失败!\n", id);
+                        return -1;
+                    }
+                    break;
+                case 4:
+            /* 查询学生年龄并打印结果 */
+                    if(-1 != GetValue(con, TABLE, "age", id, buf)){
+                        printf("--->编号为%s的学生信息查询成功，age为:%s\n", id, buf);
+                    }
+                    else{
+                        printf("--->编号为%s的学生信息查询失败!\n", id);
+                        return -1;
+                    }
+                    break;
+                case 5:
+            /* 查询学生班级并打印结果 */
+                    if(-1 != GetValue(con, TABLE, "classId", id, buf)){
+                        printf("--->编号为%s的学生信息查询成功，classId为:%s\n", id, buf);
+                    }
+                    else{
+                        printf("--->编号为%s的学生信息查询失败!\n", id);
+                        return -1;
+                    }
+
+                    break;
+                default:
+                    /* 输入错误 */
+                    printf("选项错误，系统退出!\n");
+                    mysql_close(con);
+                    return -1;
+
+
+            }
+        break;
+
+
+
+
+        case 2:
+            printf("请输入要查询的学生的编号:");
+            //接收用户输入
+            scanf("%s", id);
+            if(-1 != GetValueReturnAllInFo(con, TABLE, id, buf)){
+                printf("--->编号为%s的学生信息查询成功，studentId为:%s\n", id, buf);
+            }
+            else{
+                printf("--->编号为%s的学生信息查询失败!\n", id);
+                return -1;
+            }
+
+        break;
+
+    }
+
+
     return 0;//.为了兼容大部分的编译器加入此行
 
 }
 
 
 
+/** 
+ * 语句执行出错处理
+ * @param con 需要处理的MYSQL变量
+ * @return -1;
+*/
 
-
-
-
-
-
-
-
-
-
-
-
-/*type UserModel struct {
-	Id              int    `json:"id" gorm:"column:id;" binding:"required"`
-	Account         string `json:"account" gorm:"column:account;" binding:"required"`
-	AccountPassword string `json:"account_password" gorm:"column:account_password;" binding:"required"`
-	NickName        string `json:"nickname" gorm:"column:nickname;" binding:"required"`
-	Avatar          string `json:"avatar" gorm:"column:avatar;" binding:"required"`
-	Energy          int    `json:"energy" gorm:"column:energy;" binding:"required"`
+void finish_with_error(MYSQL *con)
+{
+    fprintf(stderr,"%s\n",mysql_error(con));
+    mysql_close(con);
 }
 
-func (u *UserModel) TableName() string {
-	return "tbl_user"
+
+
+
+
+
+
+/**
+ * 从数据库中模糊查询用户信息
+ * @param con 成功连接的MySQL变量
+ * @param table 需要查询的表
+ * @param id 用户id
+ * @param buf 存放查询结果的缓冲区
+ * @return 成功返回0，失败则返回-1
+*/
+int GetValueReturnAllInFo(MYSQL *con, const char* table,const char* id, char* buf){
+    char sql[100];
+    MYSQL_RES *result = NULL;
+    MYSQL_ROW row;
+    //构造完整sql语句
+    sprintf(sql, "select * from %s where id=%11s;",  table, id);
+
+    //查询
+    if(mysql_query(con,sql)){
+        finish_with_error(con);
+        return -1;
+    }
+    //获取并存储查询结果
+    result = mysql_store_result(con);
+    if(NULL == result)
+    {
+        finish_with_error(con);
+        return -1;
+    }
+
+    if(row = mysql_fetch_row(result)){
+        for(int i=0;;i++){ 
+            if(row[i] != NULL){
+                strcpy(buf, row[i]);
+                break;
+            }
+        
+            else{
+                strcpy(buf, "NULL");
+                continue;
+            }
+        }
+    }
+    
+    mysql_free_result(result);
+
+    return 0;
+
 }
 
-func (u *UserModel) Create() error {
-	return DB.Self.Create(u).Error
+/**
+ * 从数据库中精确查询用户信息
+ * @param con 成功连接的MySQL变量
+ * @param table 需要查询的表
+ * @param id 用户id
+ * @param buf 存放查询结果的缓冲区
+ * @param ColumnName 查询的列名
+ * @return 成功返回0，失败则返回-1
+*/
+int GetValue(MYSQL *con, const char* table, const char* ColumnName, const char* id, char* buf)
+{
+    char sql[100];
+    MYSQL_RES *result = NULL;
+    MYSQL_ROW row;
+
+    //构造完整sql语句
+    sprintf(sql, "select %s from %s where id=%11s;", ColumnName, table, id);
+    //查询
+    if(mysql_query(con,sql))
+    {
+        finish_with_error(con);
+        return -1;
+    }
+    //获取并存储查询结果
+    result = mysql_store_result(con);
+    if(NULL == result)
+    {
+        finish_with_error(con);
+        return -1;
+    }
+    //根据行查询数据
+    if(row = mysql_fetch_row(result))
+    {
+        for(int i=0;;i++){ 
+            if(row[i] != NULL){
+                strcpy(buf, row[i]);
+                break;
+            }
+        
+            else{
+                strcpy(buf, "NULL");
+                continue;
+            }
+        }
+    }
+    mysql_free_result(result);
+
+    return 0;
 }
 
-func (u *UserModel) Update() error {
-	return DB.Self.Save(u).Error
+
+
+/**
+ * 往数据库中插入用户信息
+ * @param con 成功连接的MySQL变量
+ * @param table 需要更新的表
+ * @param id 用户id
+ * @param buf 存放待更新数据的缓冲区
+ * @param ColumnName 查询的列名
+ * @return 成功返回0，失败则返回-1
+*/
+int InsertValue(MYSQL *con, const char* table, const char* ColumnName, const char* id, char* buf)
+{
+    char sql[100]; 
+    
+    //构造完整sql语句
+    sprintf(sql, "insert into %s set %s=%s where id=%11s;", table, ColumnName, buf, id);
+    //执行
+    if(mysql_query(con,sql))
+    {
+        finish_with_error(con);
+        return -1;
+    }
+
+    return 0;
+}
+/**
+ * 从数据库中更新用户信息
+ * @param con 成功连接的MySQL变量
+ * @param table 需要更新的表
+ * @param id 用户id
+ * @param buf 存放待更新数据的缓冲区
+ * @param ColumnName 查询的列名
+ * @return 成功返回0，失败则返回-1
+*/
+int UpdataValue(MYSQL *con, const char* table, const char* ColumnName , const char* id, char* buf)
+{
+    char sql[100]; 
+    
+    //构造完整sql语句
+    sprintf(sql, "update %s set %s=%s where id=%11s;", table, ColumnName , buf, id);
+    //执行
+    if(mysql_query(con,sql))
+    {
+        finish_with_error(con);
+        return -1;
+    }
+
+    return 0;
 }
 
-func GetUserByAccount(account string ) (*UserModel, error) {
-	u := &UserModel{}
-	d := DB.Self.Table("tbl_user").Where("account = ?", account).First(u)
-	return u, d.Error
+
+/**
+ * 从数据库中删除用户信息
+ * @param con 成功连接的MySQL变量
+ * @param table 需要删除信息的表
+ * @param id 用户id
+ * @param buf 存放删除结果的缓冲区
+ * @param ColumnName 查询的列名
+ * @return 成功返回0，失败则返回-1
+*/
+int DeleteValue(MYSQL *con, const char* table, const char* ColumnName , const char* id, char* buf){
+    char sql[100]; 
+    
+    //构造完整sql语句
+    sprintf(sql, "delete %s set %s=%s where id=%11s;", table, ColumnName , buf, id);
+    //执行
+    if(mysql_query(con,sql))
+    {
+        finish_with_error(con);
+        return -1;
+    }
+
+    return 0;
+
 }
 
-func GetUserByAccountAndPassword(account string , accountPassword string) (*UserModel, error) {
-	u := &UserModel{}
-	d := DB.Self.Table("tbl_user").Where("account = ? AND account_password = ?", account, accountPassword).First(u)
-	return u, d.Error
-}
 
-func GetUserById(uid int) (*UserModel, error) {
-	u := &UserModel{}
-	d := DB.Self.Table("tbl_user").Where("id = ?", uid).First(u)
-	return u, d.Error
-}*/
+
+
+
+
+
