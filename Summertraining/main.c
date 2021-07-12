@@ -5,6 +5,7 @@
 #pragma comment(lib，"libmysql.lib")
 #define DATABASE    "MyDatabase"
 #define TABLE       "user"
+
 /**
  * @brief   基于MySQL的学生信息查询系统
  * @author  龚娜

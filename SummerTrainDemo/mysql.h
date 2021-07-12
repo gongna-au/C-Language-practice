@@ -75,9 +75,9 @@ typedef int my_socket;
 #endif
 #endif /* MY_COMPILER_INCLUDED */
 
-#include "field_types.h"
-#include "my_list.h"
-#include "mysql_com.h"
+#include <mysql/field_types.h>
+#include <mysql/my_list.h>
+#include <mysql/mysql_com.h>
 
 /* Include declarations of plug-in API */
 #include "mysql/client_plugin.h"  // IWYU pragma: keep
@@ -86,13 +86,13 @@ typedef int my_socket;
   The client should be able to know which version it is compiled against,
   even if mysql.h doesn't use this information directly.
 */
-#include "mysql_version.h"  // IWYU pragma: keep
+#include <mysql/mysql_version.h>  // IWYU pragma: keep
 
 // MYSQL_TIME is part of our public API.
-#include "mysql_time.h"  // IWYU pragma: keep
+#include <mysql/mysql_time.h> // IWYU pragma: keep
 
 // The error messages are part of our public API.
-#include "errmsg.h"  // IWYU pragma: keep
+#include <mysql/errmsg.h>   // IWYU pragma: keep
 
 #ifdef __cplusplus
 extern "C" {
