@@ -123,22 +123,23 @@ do{
                     //初始化结构体
                     memset(&contactPersonModify,0,sizeof(struct person));
                     //获取结构体的值
-                    printf("\n\t\t输入公司地址：");
+                    printf("\n\t\t输入该用户新的公司地址：");
                     scanf("%s",contactPersonModify.company);
                     scanf("%*[^\n]");
                     scanf("%*c");
-                    printf("\n\t\t输入Email地址：");
+                    printf("\n\t\t输入该用户新的Email地址：");
                     scanf("%s",contactPersonModify.emailAddress);
                     scanf("%*[^\n]");
                     scanf("%*c");
-                    printf("\n\t\t输入电话号码：");
+                    printf("\n\t\t输入该用户新的电话号码：");
                     scanf("%s",contactPersonModify.telephoneNumber);
                     scanf("%*[^\n]");
                     scanf("%*c");
-                    printf("\n\t\t输入备注:");
+                    printf("\n\t\t输入该用户新的备注:");
                     scanf("%s",contactPersonModify.remarks);
 
                     ModifyrecordByName(con,TABLE,contactPersonModify,contactPersonInfo);
+                    printf("\n\t\t修改成功！\n");
                     break;
                 }
                 case 2:{
@@ -266,7 +267,7 @@ int  Addrecord(MYSQL *con, const char* table, struct person contactPerson ){
 
     //构造完整sql语句
     if(contactPerson.name!=NULL){
-        sprintf(sql, "insert into ContactPerson(Name,Company,TelephoneNumber,EmailAddress,Remarks)values(%s,%s,%s,%s,%s);",contactPerson.name,contactPerson.company,contactPerson.telephoneNumber,contactPerson.emailAddress,contactPerson.remarks);
+        sprintf(sql, "insert into ContactPerson(Name,Company,TelephoneNumber,EmailAddress,Remarks)values('%s','%s','%s','%s','%s');",contactPerson.name,contactPerson.company,contactPerson.telephoneNumber,contactPerson.emailAddress,contactPerson.remarks);
     }
     if(mysql_query(con,sql)){
         finish_with_error(con);
@@ -291,6 +292,7 @@ int  ListAllRecord(MYSQL *con, const char* table, char* buf){
     char sql[10000];
     MYSQL_RES *result = NULL;
     MYSQL_ROW row;
+    unsigned int num_fields;
     //构造完整sql语句
     sprintf(sql, "select * from %s;",  table);
     //查询
@@ -305,11 +307,46 @@ int  ListAllRecord(MYSQL *con, const char* table, char* buf){
         finish_with_error(con);
         return -1;
     }
-    if(row = mysql_fetch_row(result)){
-        
+
+ 
+        num_fields = mysql_num_fields(result);
+        //num_fields是记录条数
         printf("\n--------------------------------查询结果---------------------------------\n\n");
-        printf("\t\tId:%s   \tName:%s   \tCompany:%s\n\t\tTelephoneNumber:%s    \tEmailAddress:%s   \tRemarks:%s\n",row[0],row[1],row[2],row[3],row[4],row[5]);
-    }
+        while ((row = mysql_fetch_row(result))){
+            //lengths是字段数
+            
+            printf("\t\tId:%s   \tName:%s   \tCompany:%s\n\t\tTelephoneNumber:%s    \tEmailAddress:%s   \tRemarks:%s\n",row[0],row[1],row[2],row[3],row[4],row[5]);
+        }
+   
+        
+        /*
+        //动态分配内存
+        char **recordArray=(char**)malloc((result->row_count)*sizeof(char*));
+        for (int i=0;i<(result->field_count);i++){
+            recordArray[i]=(char *)malloc((result->field_count)*sizeof(char));
+        }
+        //往数组里存值
+        
+        for(int i=0; i < (result->row_count); i++){
+            
+            strcpy(recordArray[i], row[i]);
+
+        }
+
+        //把值打印出来
+        printf("\n--------------------------------查询结果---------------------------------\n\n");
+
+        for(int i=0; i < result->field_count; i++){
+            printf("\t\tId:%s   \tName:%s   \tCompany:%s\n\t\tTelephoneNumber:%s    \tEmailAddress:%s   \tRemarks:%s\n",recordArray[i][0],recordArray[i][1],recordArray[i][2],recordArray[i][3],recordArray[i][4],recordArray[i][5]);
+        }
+        
+
+       //释放二维数组的内存
+        for (int i = 0; i < (result->row_count); i++)
+            free(recordArray[i]);
+
+            free(recordArray); */
+    
     mysql_free_result(result);
 
     return 0;
@@ -320,89 +357,24 @@ int  ListAllRecord(MYSQL *con, const char* table, char* buf){
 
 
 //修改联系人功能
+
 int ModifyrecordByName(MYSQL *con, const char* table, struct person contactPerson, char*contactPersonInfo){
 
     char sql[10000];
     MYSQL_RES *result = NULL;
  
     MYSQL_ROW row; 
-    int tag=0;
-   
     
-    //先判断用户输入的信息是什么信息
-    //根据姓名查询
-    sprintf(sql, "select * from %s where Name=%s;", table,contactPersonInfo);
-    //查询
+
+    
+   sprintf(sql, "update %s set Company ='%s',TelephoneNumber='%s',EmailAddress='%s',Remarks='%s' where Name='%s';", table,contactPerson.company,contactPerson.telephoneNumber,contactPerson.emailAddress,contactPerson.remarks,contactPersonInfo);
+
     if(mysql_query(con,sql)){
+        
         finish_with_error(con);
         return -1;
     }
     
-    //获取并存储查询结果
-    result = mysql_store_result(con);
-    if(NULL == result){
-        tag=0;
-    }else{
-        tag=1;
-    }
-
-
-   
-    //查询结束
-    //没有查找到联系人
-    if(mysql_query(con,sql)!=0){
-        printf("\n对不起，找不到该用户!\n");
-    }
-    //查询成功返回结果
-
-    //根据姓名查到这个人
-    if(tag){
-        //根据用户输入的信息插入数据
-       
-        if(contactPerson.company!=NULL){
-            
-            //构造完整sql语句并执行
-            sprintf(sql, "update %s set Company=%s where Name=%11s;", table,contactPerson.company,contactPersonInfo);
-            if(mysql_query(con,sql)){
-                finish_with_error(con);
-                return -1;
-            }
-        }
-            
-    
-
-        if(contactPerson.emailAddress!=NULL){
-           
-            //构造完整sql语句并执行
-            sprintf(sql, "update %s set EmailAddress=%s where Name=%11s;", table,contactPerson.emailAddress,contactPersonInfo);
-            if(mysql_query(con,sql)){
-                finish_with_error(con);
-                return -1;
-            }
-        }
-        if(contactPerson.telephoneNumber!=NULL){
-           
-            //构造完整sql语句并执行
-            sprintf(sql, "update %s set TelephoneNumber=%s where Name=%11s;", table,contactPerson.telephoneNumber,contactPersonInfo);
-            if(mysql_query(con,sql)){
-                finish_with_error(con);
-                return -1;
-            }
-        }
-        if(contactPerson.remarks!=NULL){
-            //构造完整sql语句并执行
-            sprintf(sql, "update %s set Remarks=%s where Name=%11s;", table,contactPerson.remarks,contactPersonInfo);
-            if(mysql_query(con,sql)){
-                finish_with_error(con);
-                return -1;
-            }
-        }
-
-        
-
-
-    }
-    mysql_free_result(result);
     return 0;
 
 
@@ -416,37 +388,40 @@ int  ModifyrecordByPhone(MYSQL *con, const char* table, struct person contactPer
     
     MYSQL_RES *result = NULL;
     MYSQL_ROW row; 
-    
-    int tag=0;
-    
-    //先判断用户输入的信息是什么信息
-    //根据电话号码查询
-    sprintf(sql, "select * from %s where TelephoneNumber=%11s;", table,contactPersonInfo);
-    //查询
+    bool tag;
+    //构造完整sql语句并执行
+
+    sprintf(sql, "update %s set Name='%s',Company='%s',EmailAddress='%s',Remarks='%s' where TelephoneNumber='%s';", table,contactPerson.name,contactPerson.company,contactPerson.emailAddress,contactPerson.remarks,contactPersonInfo);
+
     if(mysql_query(con,sql)){
+        
         finish_with_error(con);
         return -1;
     }
-    //获取并存储查询结果
+   
+
+
+
+
+
+   /* //获取并存储查询结果
     result = mysql_store_result(con);
     if(NULL == result){
         tag=0;
     }else{
         tag=1;
     }
-
+*/
 
     //查询结束
     //没有查找到联系人
-    if(~tag){
-        printf("\n对不起，找不到该用户!\n");
-    }
+   
     //查询成功返回结果
-    if(tag){
+   /* if(tag){
     //根据用户输入的信息插入数据
         if(contactPerson.name!=NULL){
             //构造完整sql语句并执行
-            sprintf(sql, "update %s set Name=%s where TelephoneNumber=%11s;", table,contactPerson.name,contactPersonInfo);
+            sprintf(sql, "update %s set Name='%s' where TelephoneNumber='%s';", table,contactPerson.name,contactPersonInfo);
             
             if(mysql_query(con,sql)){
                 finish_with_error(con);
@@ -456,7 +431,7 @@ int  ModifyrecordByPhone(MYSQL *con, const char* table, struct person contactPer
         if(contactPerson.company!=NULL){
              
             //构造完整sql语句并执行
-            sprintf(sql, "update %s set Company=%s where TelephoneNumber=%11s;", table,contactPerson.company,contactPersonInfo);
+            sprintf(sql, "update %s set Company='%s' where TelephoneNumber='%s';", table,contactPerson.company,contactPersonInfo);
                 
             if(mysql_query(con,sql)){
                 finish_with_error(con);
@@ -466,7 +441,7 @@ int  ModifyrecordByPhone(MYSQL *con, const char* table, struct person contactPer
         if(contactPerson.emailAddress!=NULL){
             
             //构造完整sql语句并执行
-            sprintf(sql, "update %s set EmailAddress=%s where TelephoneNumber=%11s;", table,contactPerson.emailAddress,contactPersonInfo);
+            sprintf(sql, "update %s set EmailAddress='%s' where TelephoneNumber='%s';", table,contactPerson.emailAddress,contactPersonInfo);
             if(mysql_query(con,sql)){
                 finish_with_error(con);
                 return -1;
@@ -477,7 +452,7 @@ int  ModifyrecordByPhone(MYSQL *con, const char* table, struct person contactPer
         if(contactPerson.remarks!=NULL){
             
             //构造完整sql语句并执行
-            sprintf(sql, "update %s set Remarks=%s where TelephoneNumber=%11s;", table,contactPerson.remarks,contactPersonInfo);
+            sprintf(sql, "update %s set Remarks='%s' where TelephoneNumber='%s';", table,contactPerson.remarks,contactPersonInfo);
             if(mysql_query(con,sql)){
                 finish_with_error(con);
                 return -1;
@@ -486,6 +461,7 @@ int  ModifyrecordByPhone(MYSQL *con, const char* table, struct person contactPer
     }
     mysql_free_result(result);
     
+    */
     return 0;
 
 }
