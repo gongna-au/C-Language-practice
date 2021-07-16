@@ -32,9 +32,10 @@ struct person{
 //主函数
 int main(){
      //利用宏定义函数
+        //SET_BACKGROUND_COLOR(BACKGROUND_PURPLE);
+        //SET_FRONT_COLOR(FRONT_GREEN);
         SET_BACKGROUND_COLOR(BACKGROUND_WHITE);
         SET_FRONT_COLOR(FRONT_BLUE);
-         
        
         
         //初始化并连接数据库
@@ -106,7 +107,7 @@ do{
                 //先清空输入缓冲区
                 fflush(stdin);
                 printf("\n\t\t请问你要修改谁的信息?\n");
-                printf("\n\t\t根据姓名修改Or根据电话号码修改?\n\t\t根据姓名修改->1\t\t根据电话修改->2\n");
+                printf("\n\t\t根据姓名修改  Or  根据电话号码修改?\n\t\t根据姓名修改->1\t\t根据电话修改->2\n");
                 scanf("%d",&temp);
                 switch (temp)
                 {
@@ -179,10 +180,12 @@ do{
             }
             
             case 4:{ 
+                int temp4;
                 struct person contactPersonForSearch;
                 //结构体的初始化
                 memset(&contactPersonForSearch,0,sizeof(struct person));
                 //获取结构体的值
+                /*
                     scanf("%*[^\n]");
                     scanf("%*c");
                     printf("\n\t\t输入联系人昵称：");
@@ -200,12 +203,29 @@ do{
                     printf("\n\t\t输入备注:");
                     scanf("%s",contactPersonForSearch.remarks);
 
+*/              printf("\n\t\t根据姓名查找  Or  根据电话号码查找?\n\t\t根据姓名查找->1\t\t根据电话查找->2\n");
+                scanf("%d",&temp4);
+                    switch (temp4)
+                    {
+                        case 1:{
+                            char contactPersonInfo[30];
+                            printf("\n\t\t输入联系人昵称：\n");
+                            scanf("%s",contactPersonForSearch.name);
+                            Searchrecord(con,TABLE,contactPersonForSearch,buf);
+                            break;
+                
+                        }
+                        case 2:{
+                            char contactPersonInfo[30];
+                            printf("\n\t\t输入联系人电话号码：\n");
+                            scanf("%s",contactPersonForSearch.telephoneNumber);
+                            Searchrecord(con,TABLE,contactPersonForSearch,buf);
+                            break;
+                
+                        }
 
-
-
-
-                Searchrecord(con,TABLE,contactPersonForSearch,buf);
-            break;
+                    }
+                break;
             }
             case 5:{
                 char name[30];
@@ -214,6 +234,7 @@ do{
                 printf("\t\t请输入你要删除的联系人的姓名:\n");
                 scanf("%s",name);
                 Deleterecord(con,TABLE,name);
+                printf("\t\t删除成功！\n");
             break;
             }
             case 6: 
@@ -476,9 +497,10 @@ int Searchrecord(MYSQL *con, const char* table, struct person contactPerson, cha
     char sql[10000];
     MYSQL_RES *result = NULL;
     MYSQL_ROW row;
+    unsigned int num_fields;
     if(contactPerson.name!=NULL){ 
         //构造完整sql语句
-        sprintf(sql, "select * from %s where Name like '%s%%'   ;",  table, contactPerson.name);
+        sprintf(sql, "select * from %s where Name = '%s';",  table, contactPerson.name);
         //执行
         if(mysql_query(con,sql)){
             finish_with_error(con);
@@ -489,11 +511,21 @@ int Searchrecord(MYSQL *con, const char* table, struct person contactPerson, cha
         if(NULL == result){
             finish_with_error(con);
             return -1;
-        }  
+        }
+        num_fields = mysql_num_fields(result);
+        //num_fields是记录条数
+        printf("\n--------------------------------查询结果---------------------------------\n\n");
+        while ((row = mysql_fetch_row(result))){
+            //lengths是字段数
+            
+            printf("\t\tId:%s   \tName:%s   \tCompany:%s\n\t\tTelephoneNumber:%s    \tEmailAddress:%s   \tRemarks:%s\n",row[0],row[1],row[2],row[3],row[4],row[5]);
+        }
+
+
     }
     if((contactPerson.telephoneNumber!=NULL)){
         //构造完整sql语句
-        sprintf(sql, "select * from %s where TelephoneNumber=%11s;",  table, contactPerson.telephoneNumber);
+        sprintf(sql, "select * from %s where TelephoneNumber='%s';",  table, contactPerson.telephoneNumber);
         //执行
         if(mysql_query(con,sql)){
             finish_with_error(con);
@@ -522,7 +554,7 @@ int  Deleterecord(MYSQL *con, const char* table, const char* name){
     char sql[10000]; 
     
     //构造完整sql语句
-    sprintf(sql, "delete from %s where Name=%11s;", table, name);
+    sprintf(sql, "delete from %s where Name='%s';", table, name);
     //执行
     if(mysql_query(con,sql))
     {
