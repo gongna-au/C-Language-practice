@@ -1,6 +1,9 @@
-#include "DeleteHead.h"
+#include "Delete.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+// 函数功能：删除给定的键
+
 int main()
 {
     /* 从空列表开始 */

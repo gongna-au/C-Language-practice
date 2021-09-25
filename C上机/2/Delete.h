@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+// 函数功能：删除给定的键
 
 struct LinkedList{
     int data;

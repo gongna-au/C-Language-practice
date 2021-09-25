@@ -1,6 +1,7 @@
 #include "DeleteNodeByKey.h"
 #include <stdio.h>
 #include <stdlib.h>
+// 函数功能：删除给定位置的键
 int main()
 {
     /* Start with the empty list */

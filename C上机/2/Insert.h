@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
-
+// 函数功能：链表的插入
 struct LinkedList{
     int data;
     struct LinkedList *next;

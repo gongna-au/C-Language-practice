@@ -1,6 +1,7 @@
-#include "InsertHead.h"
+#include "Insert.h"
 #include <stdio.h>
 #include <stdlib.h>
+// 函数功能：链表的插入
 
 int main()
 {

@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdbool.h>
+// 函数功能：删除给定位置的键
 
 /*
 输入：position = 1，Linked List = 8->2->3->1->7
