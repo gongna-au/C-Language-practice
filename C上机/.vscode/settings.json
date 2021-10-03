@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "atomic": "cpp",
-        "insert.h": "c"
+        "insert.h": "c",
+        "insertafterspecificelem.h": "c"
     }
 }
