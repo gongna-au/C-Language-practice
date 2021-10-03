@@ -2,29 +2,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/*void UnionSet(SqList *La, SqList *Lb, SqList *Lc)
-{
-	int e; 
-	int i;
-	for (i=1; i<=La->length; i++){
-        ListInsert(Lc, i, La->elem[i-1]);
-    }				
-	for (int j=0; j<Lb->length; j++)
-	{
-		if (!LocateElemInSqList(*Lc, Lb->elem[j])){
-            ListInsert(Lc, i++, Lb->elem[j]);
-        }
-			
-	}
-}*/
-
 void main(){
-    SqList La, Lb, Lc;			
+    SqList La, Lb, Lc,Ld,Le,Lf;			
 	int i, numA, numB;
 	
 	InitSqList(&La);		
 	InitSqList(&Lb);
 	InitSqList(&Lc);
+	InitSqList(&Ld);
+	InitSqList(&Le);
+	InitSqList(&Lf);
 
     printf ("------------- Input A -------------\n");
 	printf ("num = ");
@@ -41,31 +28,61 @@ void main(){
 	printf ("num = ");
 	scanf("%d", &numB);
     printf ("elem = ");		 
-	for (i=0; i<numA; i++)
+	for (i=0; i<numB; i++)
 	{   //cin>>La.elem[i];	
-		scanf ("%d", &(La.elem[i]));
+		scanf ("%d", &(Lb.elem[i]));
 		Lb.length=Lb.length+1;
 	}
+	//int a=LocateElemInSqList(Lb,5);
+	//printf("a-------------%d\n",a);
+	//int b=IsExist(Lb,4);
+	//printf("b-------------%d\n",b);
 
 
+	
     UnionSet(&La,&Lb,&Lc);
+    MixSet(&La,&Lb,&Ld);
+    DeleteElemAB(&La,&Lb,&Le);
+    DeleteElemBy(&Lb,&La,&Lf);
+    
+	
     printf ("\n------------ Result ---------------\n");		
 	
-	printf ("\nA = { ") ;						
+	printf ("\nA = < ") ;						
 	for (i=0; i<ListLength(La); i++)
 	  printf ("%d ", La.elem[i]);
-	printf ("}");
+	printf (">");
 	
-	printf ("\nB = { ") ;						
+	printf ("\nB = < ") ;						
 	for (i=0; i<ListLength(Lb); i++)
 	  printf ("%d ", Lb.elem[i]);
-	printf ("}");
+	printf (">");
 										
-	printf ("\nA U B = { ") ;					 
+	printf ("\nA U B = < ") ;					 
 	for (i=0; i<ListLength(Lc); i++)
 	  printf ("%d ", Lc.elem[i]);
-	printf ("}");
+	printf (">");
+
+    printf ("\nA*B = < ") ;
+	for (i=0; i<ListLength(Ld); i++){
+        printf ("%d ", Ld.elem[i]);
+    }
+	printf (">");
+
+    printf ("\nA-B = < ") ;
+	for (i=0; i<ListLength(Le); i++){
+        printf ("%d ", Le.elem[i]);
+    }
+	printf (">");
 	
+    printf ("\nB-A = < ") ;
+	for (i=0; i<ListLength(Lf); i++){
+        printf ("%d ", Lf.elem[i]);
+    }
+	printf (">");
+	
+
+
 	printf ("\n-----------------------------------\n");
 		
 

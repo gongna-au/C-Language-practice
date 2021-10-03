@@ -33,7 +33,7 @@ void PrintList(Node *node)
 
 
 
- void RemoveDuplicates(Node * head){
+void RemoveDuplicates(Node * head){
       Node* current = head;
       // 存放待删除节点下一个指针的指针 被删除节点的下一个节点
       Node* next_next;
