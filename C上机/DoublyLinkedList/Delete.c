@@ -15,23 +15,20 @@ int main(){
     PushAfter(&head, 56);
     PushAfter(&head, 2);
     PushAfter(&head, 11);
+    PushAfter(&head, 11);
    
  
     printf("Contents of Doubly Linked List\n");
     Traversal(head);
 
     printf("Contents of Doubly Linked List  after delete node by key\n");
-    DeleteNodeByKey(&head,12);
+    DeleteNodeByKey(&head,11);
     Traversal(head);
-   // PrintList(head);
-    printf("Contents of Doubly Linked List  after delete node by node\n");
-    DeleteNodeByNode(&head,head->next);
-    Traversal(head);
-
+    //PrintList(head);
+    //printf("Contents of Doubly Linked List  after delete node by node\n");
+    //DeleteNodeByNode(&head,head->next);
+    //Traversal(head);
     return 0;
-
-
-
 
 
 

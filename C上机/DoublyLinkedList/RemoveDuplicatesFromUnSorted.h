@@ -11,88 +11,77 @@ struct LinkedList {
 
 
 typedef struct LinkedList  Node;
+// 双链表相对于单链表的优缺点
+// 一个 DLL 可以向前和向后两个方向遍历。
+// 如果给出指向要删除的节点的指针，DLL 中的删除操作会更有效率
+// 我们可以在给定节点之前快速插入一个新节点
+// 在单链表中，要删除一个节点，需要指向前一个节点的指针。为了获得这个前一个节点，有时会遍历列表。在 DLL 中，我们可以使用前一个指针获取前一个节点。 
+// DLL 的每个节点都需要额外的空间用于前一个指针。虽然可以用单指针实现 DLL
 
-void DeleteNodeByKey(Node** head_ref,int data){
-    Node*current=*head_ref;
-    if((*head_ref)->data==data && (*head_ref)->next!=NULL){
-        (*head_ref)=(*head_ref)->next;
-        current=current->next;
-        (*head_ref)->prev=NULL;
-    }else if((*head_ref)->data==data && (*head_ref)->next==NULL){
-        Node*temp=(*head_ref);
-        free(temp);
-        (*head_ref)=NULL;
-        return;
-    }else if((*head_ref)->data!=data &&(*head_ref)->next==NULL){
-        printf("The key you input is not found!\n");
-        return ;
-    }else if((*head_ref)->data!=data && (*head_ref)->next!=NULL){
-        current=current->next;
-    }
+
+
+
+//例如，如果链表是 12->11->12->21->41->43->21
+//那么 removeDuplicates() 应该将列表转换为 12->11->21->41->43。
+//(使用两个循环） 
+void  RemoveDuplicatesFromUnSorted1(Node **head_ref){
+    Node* current=*head_ref;
     while(current!=NULL){
-        Node* pre=current;
-        current=current->next;
-        if(pre->data==data){
-            pre->prev->next=pre->next;
-            if(current!=NULL){
-                pre->next->prev=pre->prev;
-            }
-            free(pre);
-        }
 
-    }
-
-
-}
-
-
-void DeleteNodeByNode(Node** head_ref,Node* node){
-
-    if(node ==*head_ref && (* head_ref)->next!=NULL){
-        * head_ref=node->next;
-        (* head_ref)->prev=NULL;
-        node->next=NULL;
-        free(node);
-        return;
-    }else if (node ==*head_ref && (* head_ref)->next==NULL )
-    {
-        * head_ref=NULL;
-        printf("This LinkedList only has one node!\n");
-    }else if (node !=*head_ref && *head_ref!=NULL)
-    {
-        Node * current=*head_ref;
-            while(current!=NULL){
-                
-                if (current==node && current->next!=NULL){
-                    current->prev->next=current->next;
-                    current->next->prev=current->prev;
-                    
-                }else if (current==node && current->next==NULL)
-                {
-                    current->prev->next=NULL;
-                    current->prev=NULL;
-                    free(current); 
+        Node* afterNode=current->next;
+        while(afterNode!=NULL){
+            Node* pre=afterNode;
+            afterNode=afterNode->next;
+            if(current->data==pre->data){
+                pre->prev->next=pre->next;
+                if(pre->next!=NULL){
+                    pre->next->prev=pre->prev;
                 }
-                current=current->next;
-    
             }
+        }
+        current=current->next;
     }
-    
-    
+}
 
 
 
-
-
-
-
-
+//例如，如果链表是 12->11->12->21->41->43->21
+//那么 removeDuplicates() 应该将列表转换为 12->11->21->41->43。
+//（使用排序） 
+//一般来说，归并排序是最适合高效排序链表的排序算法。 
+//使用归并排序对元素进行排序。O(nLogn) 
+//使用在排序链表中删除重复项的算法在线性时间内删除重复项。O(n) 
+//请注意，此方法不会保留元素的原始顺序。
+//时间复杂度：O(nLogn)
+//编写一个函数，该函数接受一个按非递减顺序排序的列表，并从列表中删除任何重复的节点。该列表应该只被遍历一次。 
+//例如，如果链表是 11->11->11->21->43->43->60，那么 removeDuplicates() 应该将列表转换为 11->21->43->60。
+void  RemoveDuplicatesFromUnSorted2(Node **head_ref){
 
 
 
 
 
 }
+//（使用哈希） 
+// 我们从头到尾遍历链接列表。对于每个新遇到的元素，我们检查它是否在哈希表中：如果是，我们将其删除；否则我们把它放在哈希表中。
+void  RemoveDuplicatesFromUnSorted3(Node **head_ref){
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -226,8 +215,6 @@ void  InsertBefore(Node ** head_ref,Node* nextNode,int data){
     }
 
 }
-
-
 
 
 

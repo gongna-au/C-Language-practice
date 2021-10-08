@@ -11,88 +11,36 @@ struct LinkedList {
 
 
 typedef struct LinkedList  Node;
+// 双链表相对于单链表的优缺点
+// 一个 DLL 可以向前和向后两个方向遍历。
+// 如果给出指向要删除的节点的指针，DLL 中的删除操作会更有效率
+// 我们可以在给定节点之前快速插入一个新节点
+// 在单链表中，要删除一个节点，需要指向前一个节点的指针。为了获得这个前一个节点，有时会遍历列表。在 DLL 中，我们可以使用前一个指针获取前一个节点。 
+// DLL 的每个节点都需要额外的空间用于前一个指针。虽然可以用单指针实现 DLL
 
-void DeleteNodeByKey(Node** head_ref,int data){
-    Node*current=*head_ref;
-    if((*head_ref)->data==data && (*head_ref)->next!=NULL){
-        (*head_ref)=(*head_ref)->next;
-        current=current->next;
-        (*head_ref)->prev=NULL;
-    }else if((*head_ref)->data==data && (*head_ref)->next==NULL){
-        Node*temp=(*head_ref);
-        free(temp);
-        (*head_ref)=NULL;
+void ReverseLinkedList(Node **head_ref){
+    if (*head_ref==NULL){
+        printf("The list you input is an empty list!\n");
         return;
-    }else if((*head_ref)->data!=data &&(*head_ref)->next==NULL){
-        printf("The key you input is not found!\n");
-        return ;
-    }else if((*head_ref)->data!=data && (*head_ref)->next!=NULL){
-        current=current->next;
-    }
-    while(current!=NULL){
-        Node* pre=current;
-        current=current->next;
-        if(pre->data==data){
-            pre->prev->next=pre->next;
-            if(current!=NULL){
-                pre->next->prev=pre->prev;
-            }
-            free(pre);
+    }else if ((*head_ref)->next==NULL)
+    {
+        printf("The list you input only has one node!\n");
+    }else{
+        Node* current=*head_ref;
+        Node* temp=NULL;
+        while (current!=NULL)
+        {
+            temp=current->prev;
+            current->prev=current->next;
+            current->next=temp;
+            current=current->prev;
         }
-
-    }
-
-
+        *head_ref=temp->prev; 
+    }  
 }
 
 
-void DeleteNodeByNode(Node** head_ref,Node* node){
 
-    if(node ==*head_ref && (* head_ref)->next!=NULL){
-        * head_ref=node->next;
-        (* head_ref)->prev=NULL;
-        node->next=NULL;
-        free(node);
-        return;
-    }else if (node ==*head_ref && (* head_ref)->next==NULL )
-    {
-        * head_ref=NULL;
-        printf("This LinkedList only has one node!\n");
-    }else if (node !=*head_ref && *head_ref!=NULL)
-    {
-        Node * current=*head_ref;
-            while(current!=NULL){
-                
-                if (current==node && current->next!=NULL){
-                    current->prev->next=current->next;
-                    current->next->prev=current->prev;
-                    
-                }else if (current==node && current->next==NULL)
-                {
-                    current->prev->next=NULL;
-                    current->prev=NULL;
-                    free(current); 
-                }
-                current=current->next;
-    
-            }
-    }
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-}
 
 
 
@@ -226,8 +174,6 @@ void  InsertBefore(Node ** head_ref,Node* nextNode,int data){
     }
 
 }
-
-
 
 
 
