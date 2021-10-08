@@ -48,7 +48,6 @@ class SatckOfInterger
     }
     int SatckOfInterger::empty(){
         if (size ==0){
-
             cout << "Stack is empty!"<< endl;
             return 1;
         }else{
@@ -61,10 +60,8 @@ class SatckOfInterger
         return elemments[size-1];
     }
     int SatckOfInterger::pop(){
-
-        size=size-1;
         cout << "The top element of the stack is popped" << endl;
-        return elemments[size-1];
+        return elemments[--size];
     }
     int SatckOfInterger::getSize(){
 
