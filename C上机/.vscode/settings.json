@@ -2,6 +2,8 @@
     "files.associations": {
         "atomic": "cpp",
         "insert.h": "c",
-        "insertafterspecificelem.h": "c"
+        "insertafterspecificelem.h": "c",
+        "insertionsort.h": "c",
+        "quicksort.h": "c"
     }
 }
