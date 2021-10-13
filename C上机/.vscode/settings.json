@@ -4,6 +4,9 @@
         "insert.h": "c",
         "insertafterspecificelem.h": "c",
         "insertionsort.h": "c",
-        "quicksort.h": "c"
+        "quicksort.h": "c",
+        "algorithm": "cpp",
+        "checkbrackets.h": "c",
+        "random": "cpp"
     }
 }
