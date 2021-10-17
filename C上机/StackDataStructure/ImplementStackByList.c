@@ -12,13 +12,13 @@ int main()
 {
     Stack* root = NULL;
  
-    push(&root, 10);
-    push(&root, 20);
-    push(&root, 30);
+    push(&root, '1');
+    push(&root, '2');
+    push(&root, '3');
  
-    printf("%d popped from stack\n", Pop(&root));
+    printf("%c popped from stack\n", Pop(&root));
  
-    printf("Top element is %d\n", Peek(root));
+    printf("Top element is %c\n", Peek(root));
  
     return 0;
 }

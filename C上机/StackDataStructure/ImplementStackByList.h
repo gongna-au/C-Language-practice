@@ -3,16 +3,19 @@
 #include <stdbool.h>
 #include <limits.h>
 
-
+typedef char elemType;
 struct StackNode {
-    int data;
+    elemType data;
     struct StackNode* next;
 };
 
 typedef struct StackNode  Stack;
 
 
-Stack* NewNode(int data)
+
+
+
+Stack* NewNode(elemType data)
 {
     Stack* stackNode =(Stack*) malloc(sizeof(struct StackNode ));
     stackNode->data = data;
@@ -26,19 +29,19 @@ int IsEmpty( Stack* root)
 }
 
 
-void push( Stack** root, int data)
+void push( Stack** root, elemType data)
 {
     Stack* stackNewNode=NewNode(data);
     stackNewNode->next=(*root);
     (* root)=stackNewNode;
-    printf("%d is pushed to stack\n", data);  
+    //printf("%d is pushed to stack\n", data);  
 }
 
-int Pop(Stack** root ){
+elemType Pop(Stack** root ){
     if (IsEmpty(*root)){
-        return INT_MIN;
+        return ' ';
     }
-    int item =(*root)->data;
+    elemType item =(*root)->data;
     Stack* temp=(*root);
     
     (*root)=(*root)->next;
@@ -46,9 +49,9 @@ int Pop(Stack** root ){
     return item;
 }
 
-int Peek( Stack* root)
+elemType Peek( Stack* root)
 {
     if (IsEmpty(root))
-        return INT_MIN;
+        return ' ' ;
     return root->data;
 }
