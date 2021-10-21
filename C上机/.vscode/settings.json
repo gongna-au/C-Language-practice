@@ -7,6 +7,7 @@
         "quicksort.h": "c",
         "algorithm": "cpp",
         "checkbrackets.h": "c",
-        "random": "cpp"
+        "random": "cpp",
+        "arrayimplementationofqueue.h": "c"
     }
 }
