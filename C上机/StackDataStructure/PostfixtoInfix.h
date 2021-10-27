@@ -1,6 +1,6 @@
 // CPP program to find infix for
 // a given postfix.
-#include <bits/stdc++.h>
+/*#include <bits/stdc++.h>
 using namespace std;
  
  
