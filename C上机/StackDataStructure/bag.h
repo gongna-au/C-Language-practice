@@ -58,7 +58,7 @@ void push(Stack* stack, int item ){
     }
     stack->top=stack->top+1;
     stack->array[stack->top]=item;
-    printf("%d is pushed to stack\n",item);
+    //printf("%d is pushed to stack\n",item);
 }
 
 
@@ -81,8 +81,34 @@ int Peek(Stack* stack){
     int item=stack->array[stack->top];
     return item;
 }
-void StackTraverse(Stack stack){
-       
+
+void StackTraverse(Stack* stack,int W[]){
+    
+    int item=0;
+    int index;
+    int elem;
+    printf("The object's index  are:\n");
+    printf("<  ");
+    for (int i=0;i<=stack->top;i++){
+        index=stack->top-i;
+        item=stack->array[index];
+        
+        printf("%-4d",item+1);
+    }
+    printf(">\n");
+/*
+    printf("The object's volumn are:\n");
+    printf("<  ");
+    for (int i=0;i<=stack->top;i++){
+        index=stack->top-i;
+        item=stack->array[index];
+        elem=W[item];
+        printf("%-4d",elem);
+    }
+    printf(">\n");
+    */
+
+     
 }
 
 

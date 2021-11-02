@@ -19,6 +19,7 @@ int main()
     push(stack, 10);
     push(stack, 20);
     push(stack, 30);
+    StackTraverse(stack);
  
     printf("%d popped from stack\n", Pop(stack));
  

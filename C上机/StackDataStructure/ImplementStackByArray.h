@@ -82,6 +82,21 @@ int Peek(Stack* stack){
     return item;
 }
 
+void StackTraverse(Stack* stack){
+    
+    int item=0;
+    int index;
+    printf("<  ");
+    for (int i=0;i<=stack->top;i++){
+        index=stack->top-i;
+        item=stack->array[index];
+        printf("%-4d",item);
+    }
+    printf(">\n");
+
+         
+}
+
 
 
 
