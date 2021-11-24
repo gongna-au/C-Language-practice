@@ -27,13 +27,13 @@ void RadixSort(SqList& L)
     {
         RadixPass(L.elem, C, L.length, i);
         i--;
-    if (i >= 0)
-    {
-        RadixPass(C, L.elem, L.length, i);
-        i--;
-    }else
-    for (j = 0; j < L.length; ++j) 
-        L.elem[j] = C[j];
+        if (i >= 0)
+        {
+            RadixPass(C, L.elem, L.length, i);
+            i--;
+        }else
+        for (j = 0; j < L.length; ++j) 
+            L.elem[j] = C[j];
     }
 }
 
