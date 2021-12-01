@@ -2,7 +2,7 @@
 #include<stdlib.h>
 #define bool int
 
-typedef   int ElemType;
+typedef   char ElemType;
 
 struct treeNode
 {
@@ -68,7 +68,7 @@ void inOrder(treeNode* root){
        }else{
            if(!isEmpty(stack)){
                current=pop(&stack);
-                printf("%d ", current->data);
+                printf("%c ", current->data);
                 // 我们已经访问了节点及其左子树。
                 // 现在，轮到右子树了 
                 current = current->rightChild;

@@ -4,29 +4,29 @@
 #include <stdlib.h>
 
 
-
+// 中序遍历
 // Inorder traversal
 void inorderTraversal(treeNode* root) {
-  if (root == NULL) return;
-  inorderTraversal(root->leftChild);
-  printf("%d ->", root->data);
-  inorderTraversal(root->rightChild);
+    if (root == NULL) return;
+    inorderTraversal(root->leftChild);
+    printf("%c", root->data);
+    inorderTraversal(root->rightChild);
 }
-
+// 先序遍历
 // preorderTraversal traversal
 void preorderTraversal(treeNode* root) {
-  if (root == NULL) return;
-  printf("%d ->", root->data);
-  preorderTraversal(root->leftChild);
-  preorderTraversal(root->rightChild);
+    if (root == NULL) return;
+    printf("%c", root->data);
+    preorderTraversal(root->leftChild);
+    preorderTraversal(root->rightChild);
 }
-
+// 后序遍历
 // postorderTraversal traversal
 void postorderTraversal(treeNode* root) {
-  if (root == NULL) return;
-  postorderTraversal(root->leftChild);
-  postorderTraversal(root->rightChild);
-  printf("%d ->", root->data);
+    if (root == NULL) return;
+    postorderTraversal(root->leftChild);
+    postorderTraversal(root->rightChild);
+    printf("%c", root->data);
 }
 
 
@@ -66,10 +66,10 @@ int main() {
    
     printf("Please input how many node you want insert\nnum=");
     scanf("%d",&num);
-    scanf("%d",&temp);
+    scanf("%c",&temp);
     treeNode* root = newTreeNode(temp);
     for (int i=0;i<num-1;i++){
-        scanf("%d",&temp);
+        scanf("%c",&temp);
         Insert(&root,temp);
     }
     
