@@ -28,4 +28,6 @@ void CreateBiTree(BiTree & T){
 int main(){
     BiTree T;
     CreateBiTree(T);
+    
+
 }

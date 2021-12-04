@@ -14,6 +14,7 @@ int main(){
     inorder(root);
     cout << endl;
  
+
     int key = 12;
     root = InsertNode(root, key);
  
