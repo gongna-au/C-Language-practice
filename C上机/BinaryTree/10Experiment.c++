@@ -16,7 +16,14 @@ int main()
     int n;
     printf("Please input encoding number:");
     scanf("%d",&n);
+    char array[n];
+    printf("Please input char:\n");
+    for (int q=0;q<n;q++){
+        cin>>array[q];
+    }
+    
+    
     createmanTree(H,n);
-    bianma(H,n);
-    return 0;
+    //char result[n][n+1];
+    bianma(H,n,array);      
 }

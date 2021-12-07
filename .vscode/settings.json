@@ -3,6 +3,7 @@
         "1.C": "cpp",
         "test.h": "c",
         "new": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "random": "cpp"
     }
 }
