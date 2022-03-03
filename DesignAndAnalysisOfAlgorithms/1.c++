@@ -30,7 +30,6 @@ int  DeleteSameItem(int* w, int n){
            }
        }  
    }
-
    for (int i=0;i<n-tag;) {
        if (flag[i]==1){
            tag++;
@@ -62,14 +61,14 @@ int InputArrayValue(int* w,int n){
 }
 
 int main()  {
-   int length;
+    int length;
     cout<<"Please input the array length:";
     cin>>length; 
+    int array[length];
+    int* ptrArray=array;
 
-   int array[length];
-   int* ptrArray=array;
-   InputArrayValue(ptrArray,length);
-   DeleteSameItem(ptrArray,7);
+    InputArrayValue(ptrArray,length);
+    DeleteSameItem(ptrArray,7);
    
 }  
 
