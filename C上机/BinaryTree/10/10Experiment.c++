@@ -3,7 +3,7 @@
 //删除两新人，重复建新根。
 //首先要创建一个赫夫曼树，对于赫夫曼树
 //概率我们当作权值，构造出树，对于编码就是赫夫曼的高明之处，将路径上左边改为0，
-//右面改为1，就是我们的编码，当然我们要从叶子找到根
+//右面改为1，就是我们的编码啦，当然我们要从叶子找到根
 
 #include <iostream>
 #include "10Experiment.h"
@@ -25,6 +25,5 @@ int main()
     
     createmanTree(H,n);
     //char result[n][n+1];
-    bianma(H,n,array);  
-
+    bianma(H,n,array);      
 }

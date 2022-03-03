@@ -1,6 +1,7 @@
 #include<iostream>
 #include<string>
 #include<string.h>
+
 #define TRUE 1
 #define FALSE 0
 #define OK 1
@@ -189,6 +190,7 @@ void bianma(HuffmanTree H,int n,char* ptrarray)
             cout<<"第"<<i+1<<"个字符的编码是:";
             
             while(c[i][j] != '\0'){
+                
                 
                 cout<<c[i][j];
                 j++;
